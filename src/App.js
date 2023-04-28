@@ -10,7 +10,6 @@ function App() {
   const [todoText, setTodoText] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingTodo, setEditingTodo] = useState({});
-  // ekle butonuna tıklanınca yeni todo oluşturur
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -28,7 +27,6 @@ function App() {
       return;
     }
 
-    // todo için gerekli bilgleri içeren obje ouşturma
     const newTodo = {
       id: new Date().getTime(),
       title: todoText,
@@ -36,21 +34,15 @@ function App() {
       isDone: false,
     };
 
-    // oluşturulan todo objesini todolar stateine aktarma
-    // spread opertorle önceden eklenenleri muhafaza ettik
+    
     setTodos([...todos, newTodo]);
-
-    // eleman eklenince formu sıfırlama
     setTodoText('');
   };
 
-  // silme butonuna tıklandığında çalışır
-  // todo dizisini gezer ve id si silinecek todonun idsine eşit olmayanları döndürür
   const handleDelete = (deletedTodo) => {
     const filtred = todos.filter((item) => item.id !== deletedTodo.id);
     setTodos(filtred);
 
-    // bildirim verme
     toast.error('Todo kaldırıldı', {
       position: 'top-right',
       autoClose: 3000,
@@ -63,13 +55,7 @@ function App() {
     });
   };
 
-  // yapıldı butonuna tıklanıldığında çaılşır
-  // 1 - düzenelenicek todonun dizideki sırasını bulma
-  // 2 - düzenlenicek todonun isDone değerini terişne çevirme
-  // 3 - todoyu diziden çıkarıp yerine düzenlenmiş halini koyma
-  // 4 - todolar dizisinin bir kopyasını oluşturup onu güncelledik
-  //  5 - güncelellenen kopyayı todoloların yerni değeri olarak tanımladık
-  // ["elma" , "armut1", "karpuz"]
+
   const handleDone = (todo) => {
     const index = todos.findIndex((item) => item.id === todo.id);
 
@@ -83,9 +69,7 @@ function App() {
     setTodos(newTodos);
   };
 
-  // modaldaki save butonuna tıklandığında değerleri değişen objeyi dizeye aktarma
   const handleSaveEdit = () => {
-    // eğer girilen title değeri boş ise ekrana uyarı verme
     if (!editingTodo.title) {
       toast.warn('Başlık değeri boş bırakılamaz', {
         position: 'top-right',
@@ -100,22 +84,16 @@ function App() {
       return;
     }
 
-    // splice için değişecek elemanın dizideki yerini bulduk(indexi)
     let index = todos.findIndex((item) => item.id === editingTodo.id);
 
-    // direkt olarak statei değiştirmek yerine todo dizisinin bir kopyasını oluşturduk
     const cloneTodos = [...todos];
 
-    // dizinin güncellenecek todoyu çıkarıp yerine düzenlenmiş todoyu ekledik
     cloneTodos.splice(index, 1, editingTodo);
 
-    // ekrana bastığımız diziyi güncelledik
     setTodos(cloneTodos);
 
-    // kaydedildikten sora modalı kapatma
     setShowModal(false);
 
-    // ekrana bildirim gönderme
     toast.success('Todo başarıyla güncellendi', {
       position: 'top-right',
       autoClose: 3000,
@@ -147,13 +125,13 @@ function App() {
         </form>
 
         <div className="d-flex flex-column gap-3 py-5">
-          {/* eğer state içersi boş ise ekrana yapılcak yok basıyoruz */}
+          {/*ekrana yapılcak yok basıyoruz */}
 
           {todos.length === 0 && (
             <h4 className="text-center">Yapılacak herhangi bir işiniz yok.</h4>
           )}
 
-          {/* eğer state içerisinde eleman varsa elemanalrı ekrana basıyoruz */}
+          {/*eleman varsa elemanları ekrana basıyoruz */}
           {todos.map((todo) => (
             <Todo
               key={todo.id}
